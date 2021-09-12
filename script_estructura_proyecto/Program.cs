@@ -41,7 +41,10 @@ namespace script_estructura_proyecto
             {
                 string fileNameTrim = fileName.Split("Models\\")[1];
                 fileNameTrim = fileNameTrim.Split(".cs")[0];
-                arrayModels.Add(fileNameTrim);
+                if (fileNameTrim != "DBContext")
+                {
+                    arrayModels.Add(fileNameTrim);
+                }
             }
 
             createControllers(arrayModels);
@@ -197,15 +200,13 @@ namespace script_estructura_proyecto
 
                 readTextService = readTextService.Insert(indexOfConfigService, "\n");
             }
-
-
-            using (FileStream fs = File.Create(newController))
+            using (FileStream fs = File.Create(starUpData))
             {
-                byte[] info = new UTF8Encoding(true).GetBytes(adaptNameFile(fileName, textModel));
+                byte[] info = new UTF8Encoding(true).GetBytes(readTextService);
                 fs.Write(info, 0, info.Length);
             }
 
-            using (StreamReader sr = File.OpenText(newController))
+            using (StreamReader sr = File.OpenText(starUpData))
             {
                 string s = "";
                 while ((s = sr.ReadLine()) != null)
