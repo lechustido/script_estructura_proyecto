@@ -1,0 +1,201 @@
+﻿//using nombreProyectoRemplazo.Infraestructure.textoRemplazos;
+//using nombreProyectoRemplazo.Interfaces.textoRemplazos;
+//using nombreProyectoRemplazo.Models;
+//using Libs.Data.Dto;
+//using Microsoft.AspNetCore.Authorization;
+//using Microsoft.AspNetCore.Http;
+//using Microsoft.AspNetCore.Mvc;
+//using Microsoft.Extensions.Logging;
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Net;
+//using System.Text.Json;
+//using System.Threading.Tasks;
+//namespace nombreProyectoRemplazo.Controllers
+//{
+//    [Route("api/v{version:apiVersion}/[controller]")]
+//    [Authorize]
+//    [ApiController]
+//    [ApiVersion("1.0")]
+//    public class textoRemplazoController : Controller
+//    {
+//        private readonly ILogger<textoRemplazoController> _logger;
+//        private readonly TCContext _credential;
+//        private readonly ItextoRemplazoService _textoRemplazoService;
+//        public textoRemplazoController(ILogger<textoRemplazoController> logger, TCContext credential, ItextoRemplazoService textoRemplazoService)
+//        {
+//            _logger = logger;
+//            _credential = credential;
+//            _textoRemplazoService = textoRemplazoService;
+//        }
+//        #region GETS
+//        [HttpGet()]
+//        [ProducesResponseType(StatusCodes.Status200OK)]
+//        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+//        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+//        [ProducesResponseType(StatusCodes.Status404NotFound)]
+//        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+//        public async Task<IActionResult> gettextoRemplazoList()
+//        {
+//            _logger.LogInformation("textoRemplazoController -> gettextoRemplazoList() -> Start");
+//            try
+//            {
+//                _logger.LogInformation("textoRemplazoController -> Llamada al servicio -> Start");
+//                Task<ResultDataDto<textoRemplazo>> result = _textoRemplazoService.gettextoRemplazoList();
+//                await result;
+//                _logger.LogInformation("textoRemplazoController -> Llamada al servicio -> End");
+//                _logger.LogInformation("textoRemplazoController -> Insertado de cabeceras de la respuesta -> Start");
+//                Response.Headers.Add("X-Total-Count", result.Result.iTotalRecords.ToString());
+//                Response.Headers.Add("X-Current-Page", result.Result.iPage.ToString());
+//                Response.Headers.Add("X-Page-Size", result.Result.iRecords.ToString());
+//                Response.Headers.Add("X-Sort-Property", JsonSerializer.Serialize(result.Result.sorter));
+//                _logger.LogInformation("textoRemplazoController -> Insertado de cabeceras de la respuesta -> End");
+//                return Ok(result.Result.data);
+//            }
+//            catch (Exception e)
+//            {
+//                _logger.LogInformation("textoRemplazoController -> Llamada al servicio -> Error");
+//                _logger.LogError(e, "Error al procesar la petición");
+//                _logger.LogInformation("textoRemplazoController -> gettextoRemplazoList() -> End");
+//                return StatusCode((int)HttpStatusCode.InternalServerError);
+//            }
+//        }
+//        [HttpGet("{textoRemplazoId}")]
+//        [ProducesResponseType(StatusCodes.Status200OK)]
+//        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+//        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+//        [ProducesResponseType(StatusCodes.Status404NotFound)]
+//        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+//        public async Task<IActionResult> gettextoRemplazoById(long textoRemplazoId)
+//        {
+//            _logger.LogInformation("textoRemplazoController -> gettextoRemplazoById() -> Start");
+//            try
+//            {
+//                _logger.LogInformation("textoRemplazoController -> Llamada al servicio -> Start");
+//                Task<textoRemplazo> result = _textoRemplazoService.gettextoRemplazoById(textoRemplazoId);
+//                await result;
+//                _logger.LogInformation("textoRemplazoController -> Llamada al servicio -> End");
+//                return Ok(result.Result);
+//            }
+//            catch (Exception e)
+//            {
+//                _logger.LogInformation("textoRemplazoController -> Llamada al servicio -> Error");
+//                _logger.LogError(e, "Error al procesar la petición");
+//                _logger.LogInformation("textoRemplazoController -> gettextoRemplazoById() -> End");
+//                return StatusCode((int)HttpStatusCode.InternalServerError);
+//            }
+//        }
+//        #endregion GETS
+//        #region POST
+//        [HttpPost()]
+//        [ProducesResponseType(StatusCodes.Status200OK)]
+//        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+//        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+//        [ProducesResponseType(StatusCodes.Status404NotFound)]
+//        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+//        public async Task<IActionResult> posttextoRemplazo(textoRemplazo posttextoRemplazoObject)
+//        {
+//            _logger.LogInformation("textoRemplazoController -> posttextoRemplazo() -> Start");
+//            try
+//            {
+//                _logger.LogInformation("textoRemplazoController -> Comprobación del modelo de datos enviado -> Start");
+//                if (!ModelState.IsValid)
+//                {
+//                    _logger.LogInformation("textoRemplazoController -> El modelo de datos recibido no es correcto -> End");
+//                    return BadRequest(ModelState);
+//                }
+//                _logger.LogInformation("textoRemplazoController -> Comprobación del modelo de datos enviado -> End");
+//                _logger.LogInformation("textoRemplazoController -> Llamada al servicio -> Start");
+//                bool result = await _textoRemplazoService.posttextoRemplazo(posttextoRemplazoObject);
+//                _logger.LogInformation("textoRemplazoController -> Llamada al servicio -> Datos recibidos");
+//                if (result == false)
+//                {
+//                    return StatusCode((int)HttpStatusCode.InternalServerError);
+//                }
+//                _logger.LogInformation("textoRemplazoController -> posttextoRemplazo() -> End");
+//                return StatusCode((int)HttpStatusCode.Created);
+//            }
+//            catch (Exception e)
+//            {
+//                _logger.LogInformation("textoRemplazoController -> Llamada al servicio -> Error");
+//                _logger.LogError(e, "Error al procesar la petición");
+//                _logger.LogInformation("textoRemplazoController -> posttextoRemplazo() -> End");
+//                return StatusCode((int)HttpStatusCode.InternalServerError);
+//            }
+//        }
+//        #endregion POST
+//        #region PUT
+//        [HttpPut("{textoRemplazoId}")]
+//        [ProducesResponseType(StatusCodes.Status200OK)]
+//        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+//        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+//        [ProducesResponseType(StatusCodes.Status404NotFound)]
+//        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+//        public async Task<IActionResult> puttextoRemplazo(string textoRemplazoId, [FromBody] textoRemplazo puttextoRemplazoObject)
+//        {
+//            _logger.LogInformation("textoRemplazoController -> puttextoRemplazo() -> Start");
+//            if (textoRemplazoId == "" || textoRemplazoId != puttextoRemplazoObject.idtextoRemplazo.ToString())
+//            {
+//                _logger.LogInformation("textoRemplazoController -> El textoRemplazoId introducido no existe -> Error");
+//                _logger.LogInformation("textoRemplazoController -> puttextoRemplazo() -> End");
+//                return StatusCode((int)HttpStatusCode.BadRequest);
+//            }
+//            try
+//            {
+//                _logger.LogInformation("textoRemplazoController -> Llamada al servicio -> Start");
+//                bool result = await _textoRemplazoService.puttextoRemplazo(puttextoRemplazoObject);
+//                _logger.LogInformation("textoRemplazoController -> Llamada al servicio -> End");
+//                if (result == false)
+//                {
+//                    return StatusCode((int)HttpStatusCode.InternalServerError);
+//                }
+//                return StatusCode((int)HttpStatusCode.NoContent);
+//            }
+//            catch (Exception e)
+//            {
+//                _logger.LogInformation("textoRemplazoController -> Llamada al servicio -> Error");
+//                _logger.LogError(e, "Error al procesar la petición");
+//                _logger.LogInformation("textoRemplazoController -> puttextoRemplazo() -> End");
+//                return StatusCode((int)HttpStatusCode.InternalServerError);
+//            }
+//        }
+//        #endregion PUT
+//        #region DELETE
+//        [HttpDelete("{textoRemplazoId}")]
+//        [ProducesResponseType(StatusCodes.Status200OK)]
+//        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+//        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+//        [ProducesResponseType(StatusCodes.Status404NotFound)]
+//        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+//        public async Task<IActionResult> deletetextoRemplazo(string textoRemplazoId, [FromBody] textoRemplazo deletetextoRemplazoObject)
+//        {
+//            _logger.LogInformation("textoRemplazoController -> deletetextoRemplazo() -> Start");
+//            try
+//            {
+//                if (textoRemplazoId == "" || textoRemplazoId != deletetextoRemplazoObject.idtextoRemplazo.ToString())
+//                {
+//                    _logger.LogInformation("textoRemplazoController -> El textoRemplazoId introducido no existe -> Error");
+//                    _logger.LogInformation("textoRemplazoController -> deletetextoRemplazo() -> End");
+//                    return StatusCode((int)HttpStatusCode.BadRequest);
+//                }
+//                _logger.LogInformation("textoRemplazoController -> Llamada al servicio -> Start");
+//                bool result = await _textoRemplazoService.deletetextoRemplazo(deletetextoRemplazoObject);
+//                _logger.LogInformation("textoRemplazoController -> Llamada al servicio -> End");
+//                if (result == false)
+//                {
+//                    return StatusCode((int)HttpStatusCode.InternalServerError);
+//                }
+//                return StatusCode((int)HttpStatusCode.NoContent);
+//            }
+//            catch (Exception e)
+//            {
+//                _logger.LogInformation("textoRemplazoController -> Llamada al servicio -> Error");
+//                _logger.LogError(e, "Error al procesar la petición");
+//                _logger.LogInformation("textoRemplazoController -> deletetextoRemplazo() -> End");
+//                return StatusCode((int)HttpStatusCode.InternalServerError);
+//            }
+//        }
+//        #endregion
+//    }
+//}

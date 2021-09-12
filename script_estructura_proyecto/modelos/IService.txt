@@ -1,0 +1,14 @@
+﻿//using nombreProyectoRemplazo.Models;
+//using Libs.Data.Dto;
+//using System.Threading.Tasks;
+//namespace nombreProyectoRemplazo.Interfaces.textoRemplazos
+//{
+//    public interface ItextoRemplazoService
+//    {
+//        Task<ResultDataDto<textoRemplazo>> gettextoRemplazoList();
+//        Task<textoRemplazo> gettextoRemplazoById(long textoRemplazoId);
+//        Task<bool> posttextoRemplazo(textoRemplazo posttextoRemplazoObject);
+//        Task<bool> puttextoRemplazo(textoRemplazo puttextoRemplazoObject);
+//        Task<bool> deletetextoRemplazo(textoRemplazo textoRemplazo);
+//    }
+//}

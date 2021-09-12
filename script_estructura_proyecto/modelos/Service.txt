@@ -1,0 +1,132 @@
+﻿//using AutoMapper;
+//using IESA.Common.NetCore.Utilities.Utilities.Exceptions;
+//using nombreProyectoRemplazo.Interfaces.textoRemplazos;
+//using nombreProyectoRemplazo.Models;
+//using IESA.TC.NetCore.Middleware.Context.Model;
+//using Libs.Data.Dto;
+//using Microsoft.Extensions.Logging;
+//using System;
+//using System.Threading.Tasks;
+//using System.Transactions;
+//using static IESA.Common.NetCore.Utilities.Utilities.Exceptions.IESACommonExceptionHttpCode;
+//namespace nombreProyectoRemplazo.Infraestructure.textoRemplazos
+//{
+//    public class textoRemplazoService: ItextoRemplazoService
+//    {
+//        private readonly ILogger _logger;
+//        private TCContext _context;
+//        private readonly ItextoRemplazoRepository _textoRemplazoRepository;
+//        private readonly IMapper _mapper;
+//        public textoRemplazoService(ILogger<textoRemplazoService> logger, TCContext context, ItextoRemplazoRepository textoRemplazoRepository, IMapper mapper)
+//        {
+//            _logger = logger;
+//            _context = context;
+//            _textoRemplazoRepository = textoRemplazoRepository;
+//            _mapper = mapper;
+//        }
+//        #region GET
+//        public async Task<ResultDataDto<textoRemplazo>> gettextoRemplazoList()
+//        {
+//            _logger.LogInformation("textoRemplazoService -> gettextoRemplazoList() -> Start");
+//            try
+//            {
+//                _logger.LogInformation("textoRemplazoService -> Llamada al repositorio -> Start");
+//                ResultDataDto<textoRemplazo> result = await _textoRemplazoRepository.gettextoRemplazoList();
+//                _logger.LogInformation("textoRemplazoService -> Llamada al repositorio -> End");
+//                return result;
+//            }
+//            catch (Exception)
+//            {
+//                _logger.LogInformation("textoRemplazoService -> gettextoRemplazoList() -> End");
+//                throw new IESACommonException("Error al insertar la textoRemplazoa", IESACode.c500Error);
+//            }
+//        }
+//        public Task<textoRemplazo> gettextoRemplazoById(long textoRemplazoId)
+//        {
+//            _logger.LogInformation("textoRemplazoService -> gettextoRemplazoById() -> Start");
+//            try
+//            {
+//                _logger.LogInformation("textoRemplazoService -> Llamada al repositorio -> Start");
+//                Task<textoRemplazo> result = _textoRemplazoRepository.gettextoRemplazoById(textoRemplazoId);
+//                _logger.LogInformation("textoRemplazoService -> Llamada al repositorio -> End");
+//                return result;
+//            }
+//            catch (Exception)
+//            {
+//                _logger.LogInformation("textoRemplazoService -> gettextoRemplazoById() -> End");
+//                throw new IESACommonException("Error al insertar la textoRemplazoa", IESACode.c500Error);
+//            }
+//        }
+//        #endregion GET
+//        #region POST
+//        public async Task<bool> posttextoRemplazo(textoRemplazo posttextoRemplazoObject)
+//        {
+//            _logger.LogInformation("textoRemplazoService -> posttextoRemplazo() -> Start");
+//                try
+//                {
+//                    _logger.LogInformation("textoRemplazoService -> Llamada al repositorio -> Start");
+//                    bool result = await _textoRemplazoRepository.posttextoRemplazo(posttextoRemplazoObject);
+//                    _logger.LogInformation("textoRemplazoService -> Llamada al repositorio -> End");
+//                    _logger.LogInformation("textoRemplazoService -> posttextoRemplazo() -> End");
+//                    return result;
+//                }
+//                catch (Exception)
+//                {
+//                _logger.LogInformation("textoRemplazoService -> posttextoRemplazo() -> End");
+//                _logger.LogInformation("textoRemplazoRepository -> postMailBox() -> End");
+//                throw new IESACommonException("Error al insertar la textoRemplazoa", IESACode.c500Error);
+//            }
+//        }
+//        #endregion POST
+//        #region PUT
+//        public async Task<bool> puttextoRemplazo(textoRemplazo puttextoRemplazoObject)
+//        {
+//            _logger.LogInformation("textoRemplazoService -> posttextoRemplazo() -> Start");
+//            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+//            {
+//                try
+//                {
+//                    textoRemplazo textoRemplazoObject = await _textoRemplazoRepository.gettextoRemplazoById(puttextoRemplazoObject.idtextoRemplazo);
+//                    if (textoRemplazoObject == null)
+//                    {
+//                        _logger.LogInformation("textoRemplazoService -> No existe ninguna textoRemplazoa con ese Id. Id: " + puttextoRemplazoObject.idtextoRemplazo);
+//                        return false;
+//                    }
+//                    textoRemplazoObject = _mapper.Map<textoRemplazo, textoRemplazo>(puttextoRemplazoObject, textoRemplazoObject);
+//                    await _textoRemplazoRepository.puttextoRemplazo(textoRemplazoObject);
+//                    scope.Complete();
+//                    return true;
+//                }
+//                catch (Exception)
+//                {
+//                    _logger.LogInformation("textoRemplazoService -> posttextoRemplazo() -> End");
+//                    _logger.LogInformation("textoRemplazoRepository -> postMailBox() -> End");
+//                    throw new IESACommonException("Error al insertar la textoRemplazoa", IESACode.c500Error);
+//                }
+//                finally
+//                {
+//                    scope.Dispose();
+//                }
+//            }
+//        }
+//        #endregion PUT
+//        #region DELETE
+//        public Task<bool> deletetextoRemplazo(textoRemplazo textoRemplazo)
+//        {
+//            _logger.LogInformation("textoRemplazoService -> deletetextoRemplazo() -> Start");
+//            try
+//            {
+//                _logger.LogInformation("textoRemplazoService -> Llamada al repositorio -> Start");
+//                Task<bool> result = _textoRemplazoRepository.deletetextoRemplazo(textoRemplazo);
+//                _logger.LogInformation("textoRemplazoService -> Llamada al repositorio -> End");
+//                return result;
+//            }
+//            catch (Exception)
+//            {
+//                _logger.LogInformation("textoRemplazoService -> deletetextoRemplazo() -> End");
+//                throw new IESACommonException("Error al borrar la textoRemplazoa con id:" + textoRemplazo.idtextoRemplazo, IESACode.c500Error);
+//            }
+//        }
+//        #endregion
+//    }
+//}
