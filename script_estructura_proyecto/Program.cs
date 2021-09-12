@@ -7,7 +7,7 @@ namespace script_estructura_proyecto
 
 
 
-//Todo. al importar, hay que ver de conde carajo savo el nombre del proyecto (seria bueno revisar la carpeta padre)
+//TO DO. En el Startup añadir las importaciones de servicios como el autofilter, el versionado ...
 {
     class Program
     {
@@ -186,7 +186,7 @@ namespace script_estructura_proyecto
                 // USING
                 readTextService = readTextService.Insert(0, "using " + proyectName + ".Infraestructure." + fileName + "s;\n");
                 readTextService = readTextService.Insert(0, "using " + proyectName + ".Interfaces." + fileName + "s;\n");
-                readTextService = readTextService.Insert(0, "using " + proyectName + ".Models\n");
+                readTextService = readTextService.Insert(0, "using " + proyectName + ".Models;\n");
             }
 
             int indexOfConfigService = readTextService.IndexOf("public void ConfigureServices(IServiceCollection services)") + 75;

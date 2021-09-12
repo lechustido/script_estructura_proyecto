@@ -31,4 +31,10 @@
     </Compile>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="modelos\AutoMapperProfile.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
