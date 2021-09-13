@@ -200,6 +200,24 @@ namespace script_estructura_proyecto
 
                 readTextService = readTextService.Insert(indexOfConfigService, "\n");
             }
+
+            // Autofilter
+            readTextService = readTextService.Insert(indexOfConfigService, "services.AddTransient<IAutoFilterGenerator, TCAutoFilterGenerator>();\n");
+
+            // Api Version
+            readTextService = readTextService.Insert(indexOfConfigService, "options.DefaultApiVersion = new ApiVersion(1, 0); });\n");
+            readTextService = readTextService.Insert(indexOfConfigService, "options.ReportApiVersions = true;\n");
+            readTextService = readTextService.Insert(indexOfConfigService, "options.AssumeDefaultVersionWhenUnspecified = true;\n");
+            readTextService = readTextService.Insert(indexOfConfigService, "services.AddApiVersioning(options =>{\n");
+
+
+/*
+            int indexOfConfig = readTextService.IndexOf("public void Configure(IApplicationBuilder app, IWebHostEnvironment env)") + 80;
+
+            readTextService = readTextService.Insert(indexOfConfig, "app.UseIESACommonOptions(env);\n");
+            readTextService = readTextService.Insert(indexOfConfig, "app.UseAuthorization();\n");*/
+            
+
             using (FileStream fs = File.Create(starUpData))
             {
                 byte[] info = new UTF8Encoding(true).GetBytes(readTextService);
